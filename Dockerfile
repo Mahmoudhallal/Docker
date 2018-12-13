@@ -1,17 +1,27 @@
-FROM continuumio/miniconda3  
+FROM ubuntu
+MAINTAINER Mahmoud Hallal <mahmoud.hallal@dbmr.unibe.ch>
 
-# docker build -t vanessa/snakemake.scif .  
 
+RUN apt-get -qq update
+RUN apt-get install -y wget git build-essential cmake unzip curl
+RUN apt-get install -qqy python3-setuptools python3-docutils python3-flask
+RUN apt-get install -y vim-tiny
+
+RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
+    wget --quiet https://repo.continuum.io/miniconda/Miniconda3-4.3.14-Linux-x86_64.sh -O ~/miniconda.sh && \
+    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
+    rm ~/miniconda.sh
+
+
+ENV PATH /opt/conda/bin:$PATH
 RUN conda install -c bioconda -c conda-forge snakemake
-#ADD snakemake_tutorial.scif / 
-#ADD Snakefile / 
-#ADD config.yaml /  
-#ENV PATH /opt/conda/bin:$PATH  RUN apt-get update && apt-get -y install build-essential git valgrind time  
 
-# Install scif, snakemake  RUN /opt/conda/bin/pip install scif && \
-# /opt/conda/bin/pip install snakemake==4.4.0 && \
-#  /opt/conda/bin/pip install docutils==0.14 && \
-#   /opt/conda/bin/scif install /snakemake_tutorial.scif  
-   
+WORKDIR /home/user/
 
-#ENTRYPOINT ["scif"]
+RUN git clone https://github.com/Mahmoudhallal/KAEA.git
+
+WORKDIR /home/user/KAEA
+
+RUN ln -sf /bin/bash /bin/sh
+
+#RUN snakemake --use-conda
