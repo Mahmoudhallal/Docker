@@ -24,4 +24,9 @@ WORKDIR /home/user/KAEA
 
 RUN ln -sf /bin/bash /bin/sh
 
+RUN cd /snakemake/
+
+RUN conda env create --name snakemake-general --file environment.yaml
+
+RUN source activate snakemake-general 
 #RUN snakemake --use-conda
