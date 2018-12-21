@@ -15,18 +15,16 @@ RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
 
 ENV PATH /opt/conda/bin:$PATH
 RUN conda install -c bioconda -c conda-forge snakemake
+RUN apt-get install r-base-dev
 
 WORKDIR /home/user/
 
 RUN git clone https://github.com/Mahmoudhallal/KAEA.git
 
-WORKDIR /home/user/KAEA
+WORKDIR /home/user/KAEA/snakemake
 
-RUN ln -sf /bin/bash /bin/sh
-
-RUN cd /snakemake/
-
+#RUN ln -sf /bin/bash /bin/sh
 RUN conda env create --name snakemake-general --file environment.yaml
 
-RUN source activate snakemake-general 
 #RUN snakemake --use-conda
+
